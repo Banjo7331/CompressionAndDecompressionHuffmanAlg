@@ -14,7 +14,6 @@ public class DecompressorHuff {
     private ArrayList<HuffmanTreeNode> postOrderTreeNodes = new ArrayList<>();
 
     private static Map<String, Byte> generateInverseHuffmanCodes(Map<Byte, String> huffmanCodes) {
-        // Generate the inverse map for decoding
         Map<String, Byte> inverseHuffmanCodes = new HashMap<>();
         for (Map.Entry<Byte, String> entry : huffmanCodes.entrySet()) {
             inverseHuffmanCodes.put(entry.getValue(), entry.getKey());
@@ -35,7 +34,7 @@ public class DecompressorHuff {
         long fileLength = file.length();
 
         try (BitReader bis = new BitReader(new BufferedInputStream(new FileInputStream(inputFilePath)), fileLength);
-             FileWriter writer = new FileWriter(outputFileName)) {
+             FileOutputStream outputStream = new FileOutputStream(outputFileName)) {
 
             readDictionary(bis);
             generateCodes(root,"");
@@ -49,11 +48,10 @@ public class DecompressorHuff {
             while ((bit = bis.readBit()) != -1) {
                 currentCode.append(bit);
 
-                // Check if the current code is a valid Huffman code
                 if (inverseHuffmanCodes.containsKey(currentCode.toString())) {
                     int character = inverseHuffmanCodes.get(currentCode.toString());
-                    writer.write(character);
-                    currentCode = new StringBuilder(); // Reset the current code
+                    outputStream.write(character);
+                    currentCode = new StringBuilder();
                 }
             }
         } catch (IOException e) {
