@@ -6,20 +6,29 @@ public class HuffmanTreeNode implements Comparable<HuffmanTreeNode> {
     private int frequency;
 
     private boolean leaf;
-    private HuffmanTreeNode left;
-    private HuffmanTreeNode right;
+    private HuffmanTreeNode left = null;
+    private HuffmanTreeNode right = null;
     public HuffmanTreeNode(){}
+    public HuffmanTreeNode(byte character){
+        this.character = character;
+        this.leaf = false;
+    }
     public HuffmanTreeNode(byte character,int frequency){
         this.character = character;
         this.frequency = frequency;
-        this.left = null;
-        this.right = null;
+        this.leaf = false;
+    }
+    public HuffmanTreeNode(byte character,int frequency, boolean isLeaf){
+        this.character = character;
+        this.frequency = frequency;
+        this.leaf = isLeaf;
     }
     public HuffmanTreeNode(byte character,int frequency,HuffmanTreeNode left, HuffmanTreeNode right){
         this.character = character;
         this.frequency = frequency;
         this.left = left;
         this.right = right;
+        this.leaf = false;
     }
 
     public byte GetCharacter(){

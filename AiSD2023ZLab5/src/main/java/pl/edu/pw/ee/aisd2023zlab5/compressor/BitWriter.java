@@ -4,29 +4,29 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 public class BitWriter implements AutoCloseable {
-    private OutputStream outputStream;
     private int currentByte;
-    private int numBitsFilled;
+    private int numberOfFilledBits;
+    private OutputStream outputStream;
 
     public BitWriter(OutputStream outputStream) {
-        this.outputStream = outputStream;
         this.currentByte = 0;
-        this.numBitsFilled = 0;
+        this.numberOfFilledBits = 0;
+        this.outputStream = outputStream;
     }
 
     public void writeBit(boolean bit) throws IOException {
         currentByte = (currentByte << 1) | (bit ? 1 : 0);
-        numBitsFilled++;
+        numberOfFilledBits++;
 
-        if (numBitsFilled == 8) {
+        if (numberOfFilledBits == 8) {
             outputStream.write(currentByte);
             currentByte = 0;
-            numBitsFilled = 0;
+            numberOfFilledBits = 0;
         }
     }
 
     public void flush() throws IOException {
-        while (numBitsFilled != 0) {
+        while (numberOfFilledBits != 0) {
             writeBit(false);
         }
         outputStream.flush();

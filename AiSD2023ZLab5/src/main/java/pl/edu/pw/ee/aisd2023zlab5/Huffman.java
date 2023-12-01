@@ -3,12 +3,6 @@ package pl.edu.pw.ee.aisd2023zlab5;
 import pl.edu.pw.ee.aisd2023zlab5.compressor.CompressorHuff;
 import pl.edu.pw.ee.aisd2023zlab5.decompressor.DecompressorHuff;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.*;
-
 
 public class Huffman {
     private String nameOfFileGeneral;

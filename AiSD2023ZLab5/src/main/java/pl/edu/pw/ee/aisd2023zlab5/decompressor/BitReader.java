@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class BitReader implements AutoCloseable {
-    private InputStream inputStream;
     private int currentByte;
     private int numBitsFilled;
+    private InputStream inputStream;
     private long lengthOfFile;
     private long howManyBytes = 0;
     private int howManyBitsIgnore=0;
@@ -22,7 +22,7 @@ public class BitReader implements AutoCloseable {
     public int readBit() throws IOException {
         if(howManyBytes == lengthOfFile){
             return readLastByteBits();
-    }
+        }
         if (currentByte == -1) {
             return -1;
         }
@@ -46,7 +46,7 @@ public class BitReader implements AutoCloseable {
 
         return bit;
     }
-    public int readLastByteBits() throws IOException {
+    public int readLastByteBits() {
         if(numBitsFilled - howManyBitsIgnore <=0){
             return -1;
         }
