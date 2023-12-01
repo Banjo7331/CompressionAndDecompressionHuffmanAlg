@@ -1,29 +1,31 @@
 package pl.edu.pw.ee.aisd2023zlab5.services;
 
 import pl.edu.pw.ee.aisd2023zlab5.services.HuffmanTreeNode;
+import pl.edu.pw.ee.aisd2023zlab5.services.interfaces.PriorityHeap;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PriorityQueueOnHeap {
+public class PriorityQueueOnHeap implements PriorityHeap {
     private List<HuffmanTreeNode> heap = new ArrayList<>();
+    @Override
     public void add(HuffmanTreeNode node) {
         heap.add(node);
-        int index = heap.size() - 1;
-        while (index > 0) {
+        int idx = heap.size() - 1;
+        while (idx > 0) {
 
-            int parentIndex = (index - 1) / 2;
-            if (heap.get(index).compareTo(heap.get(parentIndex)) <= 0) {
+            int parentIndex = (idx - 1) / 2;
+            if (heap.get(idx).compareTo(heap.get(parentIndex)) <= 0) {
                 break;
             }
-            swap(index, parentIndex);
-            index = parentIndex;
+            swap(idx, parentIndex);
+            idx = parentIndex;
         }
     }
-
+    @Override
     public HuffmanTreeNode pull() {
         if (isEmpty()) {
-            throw new RuntimeException("Priority queue is empty");
+            throw new RuntimeException("Empty!!");
         }
         HuffmanTreeNode root = heap.get(0);
         int lastIndex = heap.size() - 1;
@@ -59,9 +61,11 @@ public class PriorityQueueOnHeap {
         heap.set(j, temp);
     }
 
+    @Override
     public int size() {
         return heap.size();
     }
+    @Override
 
     public boolean isEmpty() {
         return heap.isEmpty();

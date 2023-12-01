@@ -12,8 +12,10 @@ import java.util.*;
 
 public class Huffman {
     private String nameOfFileGeneral;
+    private String whereToSaveCompressed;
+    private String whereToSaveDecompressed;
     private final String Extension = ".bartek";
-    private String ogExtension;
+    private String ogExtension =".txt";
 
     public int huffman(String pathToRootDir, boolean compress){
         String reversedString = new StringBuilder(pathToRootDir).reverse().toString();
@@ -33,18 +35,25 @@ public class Huffman {
             ogExtension = "." +nameOfFileGeneral.split("\\.")[1];
             String nameWithoutExtension = nameOfFileGeneral.split("\\.")[0];
 
-            String whereToSaveCompressed = "C:\\Users\\cylwi\\OneDrive\\Pulpit\\AiSD2023ZLab5\\resultOfCompression\\"+nameWithoutExtension+Extension;
+            whereToSaveCompressed = "C:\\Users\\cylwi\\OneDrive\\Pulpit\\AiSD2023ZLab5\\resultOfCompression\\"+nameWithoutExtension+Extension;
             CompressorHuff compressorHuff = new CompressorHuff();
-            compressorHuff.MakeDictionary(pathToRootDir,whereToSaveCompressed);
+            compressorHuff.compress(pathToRootDir,whereToSaveCompressed);
         }else{
             String nameWithoutExtension = nameOfFileGeneral.split("\\.")[0];
 
-            String whereToSaveDecompressed= "C:\\Users\\cylwi\\OneDrive\\Pulpit\\AiSD2023ZLab5\\resultOfDecompression\\"+nameWithoutExtension+ogExtension;
+            whereToSaveDecompressed= "C:\\Users\\cylwi\\OneDrive\\Pulpit\\AiSD2023ZLab5\\resultOfDecompression\\"+nameWithoutExtension+ogExtension;
             DecompressorHuff decompressorHuff = new DecompressorHuff();
             decompressorHuff.decompressFile(pathToRootDir, whereToSaveDecompressed);
         }
 
         return 0;
     }
+    public String getCompressedDirectory(){
+        return whereToSaveCompressed;
+    }
+    public String getDecompressedDirectory(){
+        return whereToSaveDecompressed;
+    }
+
 
 }

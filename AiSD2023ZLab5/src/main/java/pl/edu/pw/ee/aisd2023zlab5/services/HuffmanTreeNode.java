@@ -8,6 +8,19 @@ public class HuffmanTreeNode implements Comparable<HuffmanTreeNode> {
     private boolean leaf;
     private HuffmanTreeNode left;
     private HuffmanTreeNode right;
+    public HuffmanTreeNode(){}
+    public HuffmanTreeNode(byte character,int frequency){
+        this.character = character;
+        this.frequency = frequency;
+        this.left = null;
+        this.right = null;
+    }
+    public HuffmanTreeNode(byte character,int frequency,HuffmanTreeNode left, HuffmanTreeNode right){
+        this.character = character;
+        this.frequency = frequency;
+        this.left = left;
+        this.right = right;
+    }
 
     public byte GetCharacter(){
         return character;
@@ -49,4 +62,6 @@ public class HuffmanTreeNode implements Comparable<HuffmanTreeNode> {
     public int compareTo(HuffmanTreeNode o) {
         return o.frequency - this.frequency;
     }
+
+
 }

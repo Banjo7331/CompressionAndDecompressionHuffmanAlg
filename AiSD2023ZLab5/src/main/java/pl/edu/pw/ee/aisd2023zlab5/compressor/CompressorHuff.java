@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class CompressorHuff {
@@ -15,7 +16,7 @@ public class CompressorHuff {
     private StringBuilder dictionary = new StringBuilder();
     ArrayList<Byte> bytesToAdd = new ArrayList<>();
 
-    public static Map<Byte, Integer> ReadFileForData(String pathToRootDir) {
+    public static Map<Byte, Integer> ReadFileForData(String pathToRootDir){
         Map<Byte, Integer> licznikZnakow = new HashMap<>();
 
         try (InputStream inputStream = new FileInputStream(pathToRootDir)) {
@@ -23,7 +24,6 @@ public class CompressorHuff {
             int znak;
             while ((znak = inputStream.read()) != -1) {
                 byte byteKey = (byte) znak;
-
 
                 licznikZnakow.put(byteKey, licznikZnakow.getOrDefault(byteKey, 0) + 1);
             }
@@ -46,7 +46,7 @@ public class CompressorHuff {
         generateCodes(root.GetLeft(), currentCode + "0");
         generateCodes(root.GetRight(), currentCode + "1");
     }
-    public void MakeDictionary(String pathToRootDir, String compressedPath){
+    public void compress(String pathToRootDir, String compressedPath){
         Map<Byte,Integer> frequency = ReadFileForData( pathToRootDir);
         HuffmanTreeNode root = HuffmanTree(frequency);
 
@@ -59,7 +59,7 @@ public class CompressorHuff {
         System.out.println(dictionary);
 
     }
-    public HuffmanTreeNode HuffmanTree(Map<Byte, Integer> frequency){
+    public HuffmanTreeNode HuffmanTree(Map<Byte,Integer> frequency){
 
 
         PriorityQueueOnHeap priorityQueueOnHeap = new PriorityQueueOnHeap();

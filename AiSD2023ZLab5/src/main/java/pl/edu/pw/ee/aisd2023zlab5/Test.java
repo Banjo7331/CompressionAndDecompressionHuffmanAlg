@@ -8,11 +8,11 @@ import java.util.Map;
 public class Test {
     public static void main(String[] args) {
 
-        String data = "C:\\Users\\cylwi\\OneDrive\\Pulpit\\AiSD2023ZLab5\\testFiles\\niemanie.txt";
+        String data = "C:\\Users\\cylwi\\OneDrive\\Pulpit\\AiSD2023ZLab5\\testFiles\\Pan Tadeusz.txt";
 
         Huffman huff = new Huffman();
         huff.huffman(data,true);
-        huff.huffman("C:\\Users\\cylwi\\OneDrive\\Pulpit\\AiSD2023ZLab5\\resultOfCompression\\niemanie.bartek",false);
+        huff.huffman("C:\\Users\\cylwi\\OneDrive\\Pulpit\\AiSD2023ZLab5\\resultOfCompression\\Pan Tadeusz.bartek",false);
 
     }
 }
