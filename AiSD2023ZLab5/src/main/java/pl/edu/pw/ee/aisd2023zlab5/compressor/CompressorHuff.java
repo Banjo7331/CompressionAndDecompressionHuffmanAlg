@@ -3,10 +3,15 @@ package pl.edu.pw.ee.aisd2023zlab5.compressor;
 import pl.edu.pw.ee.aisd2023zlab5.services.HuffmanTreeNode;
 import pl.edu.pw.ee.aisd2023zlab5.services.PriorityQueueOnHeap;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.*;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CompressorHuff {
     private Map<Byte, String> huffmanCodes = new HashMap<>();
@@ -102,11 +107,15 @@ public class CompressorHuff {
 
             writeDictionary(bos);
 
-            byte[] inputData = Files.readAllBytes(Paths.get(inputFilePath));
-            for (byte b : inputData) {
-                String code = huffmanCodes.get(b);
-                for (char bit : code.toCharArray()) {
-                    bos.writeBit(bit == '1' ? true : false);
+            try (InputStream inputStream = new FileInputStream(inputFilePath)) {
+                int byteRead;
+                while ((byteRead = inputStream.read()) != -1) {
+                    byte byteKey = (byte) byteRead;
+
+                    String code = huffmanCodes.get(byteKey);
+                    for (char bit : code.toCharArray()) {
+                        bos.writeBit(bit == '1' ? true : false);
+                    }
                 }
             }
 

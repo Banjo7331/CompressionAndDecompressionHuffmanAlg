@@ -8,7 +8,7 @@ public class Huffman {
     private String nameOfFileGeneral;
     private String whereToSaveCompressed;
     private String whereToSaveDecompressed;
-    private final String Extension = ".bartek";
+    private final static String ExtensionForDecompressedFiles = ".bartek";
     private String ogExtension =".txt";
 
     public int huffman(String pathToRootDir, boolean compress){
@@ -29,7 +29,7 @@ public class Huffman {
             ogExtension = "." +nameOfFileGeneral.split("\\.")[1];
             String nameWithoutExtension = nameOfFileGeneral.split("\\.")[0];
 
-            whereToSaveCompressed = "C:\\Users\\cylwi\\OneDrive\\Pulpit\\AiSD2023ZLab5\\resultOfCompression\\"+nameWithoutExtension+Extension;
+            whereToSaveCompressed = "C:\\Users\\cylwi\\OneDrive\\Pulpit\\AiSD2023ZLab5\\resultOfCompression\\"+nameWithoutExtension+ExtensionForDecompressedFiles;
             CompressorHuff compressorHuff = new CompressorHuff();
             compressorHuff.compress(pathToRootDir,whereToSaveCompressed);
         }else{
