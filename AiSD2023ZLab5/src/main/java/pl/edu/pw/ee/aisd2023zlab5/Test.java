@@ -11,8 +11,8 @@ public class Test {
         String data = "C:\\Users\\cylwi\\OneDrive\\Pulpit\\AiSD2023ZLab5\\testFiles\\Pan Tadeusz.txt";
 
         Huffman huff = new Huffman();
-        huff.huffman(data,true);
-        huff.huffman("C:\\Users\\cylwi\\OneDrive\\Pulpit\\AiSD2023ZLab5\\resultOfCompression\\Pan Tadeusz.bartek",false);
+        huff.start(data,"C:\\Users\\cylwi\\OneDrive\\Pulpit\\AiSD2023ZLab5\\resultOfCompression\\Pan Tadeusz.bhuff",true);
+        huff.start("C:\\Users\\cylwi\\OneDrive\\Pulpit\\AiSD2023ZLab5\\resultOfCompression\\Pan Tadeusz.bhuff","C:\\Users\\cylwi\\OneDrive\\Pulpit\\AiSD2023ZLab5\\resultOfCompression\\Pan Tadeusz.txt",false);
 
     }
 }

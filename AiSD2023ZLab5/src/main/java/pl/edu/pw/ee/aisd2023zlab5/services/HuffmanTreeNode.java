@@ -69,7 +69,7 @@ public class HuffmanTreeNode implements Comparable<HuffmanTreeNode> {
 
     @Override
     public int compareTo(HuffmanTreeNode o) {
-        return o.frequency - this.frequency;
+        return this.frequency - o.frequency;
     }
 
 

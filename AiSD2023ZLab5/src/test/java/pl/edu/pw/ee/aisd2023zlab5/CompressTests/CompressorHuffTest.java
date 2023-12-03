@@ -14,7 +14,7 @@ import static org.junit.Assert.assertTrue;
 public class CompressorHuffTest {
     private static final String filenameToCompressWithoutExtension = "C:\\Users\\cylwi\\OneDrive\\Pulpit\\AiSD2023ZLab5\\testFiles\\generatedNumbers";
     private static final String extensionForTexts = ".txt";
-    private static final String extensionForCompressed = ".bartek";
+    private static final String extensionForCompressed = ".bhuff";
     @Before
     public void setup() {
         removeFilesBeforeStart();
@@ -36,7 +36,7 @@ public class CompressorHuffTest {
             File fileToCompress = new File(filenameToCompressWithoutExtension+extensionForTexts);
             long startingLength = fileToCompress.length();
 
-            huffcompress.huffman(filenameToCompressWithoutExtension+extensionForTexts,true);
+            huffcompress.start(filenameToCompressWithoutExtension+extensionForTexts,filenameToCompressWithoutExtension+extensionForCompressed,true);
 
             File fileCompressed = new File(huffcompress.getCompressedDirectory());
 
@@ -67,7 +67,7 @@ public class CompressorHuffTest {
             File fileToCompress = new File(filenameToCompressWithoutExtension+extensionForTexts);
             long startingLength = fileToCompress.length();
 
-            huffcompress.huffman(filenameToCompressWithoutExtension+extensionForTexts,true);
+            huffcompress.start(filenameToCompressWithoutExtension+extensionForTexts,filenameToCompressWithoutExtension+extensionForCompressed,true);
 
             File fileCompressed = new File(huffcompress.getCompressedDirectory());
 
@@ -85,5 +85,7 @@ public class CompressorHuffTest {
     private static void removeFilesBeforeStart() {
         File f = new File((filenameToCompressWithoutExtension+extensionForTexts));
         f.delete();
+        File f1 = new File((filenameToCompressWithoutExtension+extensionForCompressed));
+        f1.delete();
     }
 }

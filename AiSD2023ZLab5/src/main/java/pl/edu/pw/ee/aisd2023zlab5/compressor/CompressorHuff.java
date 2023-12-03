@@ -51,8 +51,7 @@ public class CompressorHuff {
     }
     public HuffmanTreeNode huffmanTree(Map<Byte,Integer> frequency){
 
-        PriorityQueueOnHeap priorityQueueOnHeap = new PriorityQueueOnHeap();
-
+        PriorityQueueOnHeap<HuffmanTreeNode> priorityQueueOnHeap = new PriorityQueueOnHeap();
         for (Map.Entry<Byte, Integer> entry : frequency.entrySet()) {
             byte loadedByte = entry.getKey();
             int freq = entry.getValue();

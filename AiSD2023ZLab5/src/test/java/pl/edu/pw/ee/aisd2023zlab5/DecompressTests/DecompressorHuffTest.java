@@ -15,7 +15,7 @@ public class DecompressorHuffTest {
     private static final String bigFilenameToCompressWithoutExtension = "C:\\Users\\cylwi\\OneDrive\\Pulpit\\AiSD2023ZLab5\\resultOfCompression\\niemanie";
     private static final String smallFilenameToCompressWithoutExtension = "C:\\Users\\cylwi\\OneDrive\\Pulpit\\AiSD2023ZLab5\\resultOfCompression\\polskie";
     private static final String extensionForTexts = ".txt";
-    private static final String extensionForCompressed = ".bartek";
+    private static final String extensionForCompressed = ".bhuff";
     @Test
     public void bigFileDecompressTest() {
         Huffman huffcompress = new Huffman();
@@ -24,7 +24,7 @@ public class DecompressorHuffTest {
         File fileCompressed = new File(bigFilenameToCompressWithoutExtension+extensionForCompressed);
         long compressedLength = fileCompressed.length();
 
-        huffcompress.huffman(bigFilenameToCompressWithoutExtension+extensionForCompressed,false);
+        huffcompress.start(bigFilenameToCompressWithoutExtension+extensionForCompressed,bigFilenameToCompressWithoutExtension+extensionForTexts,false);
 
         File fileDecompressed = new File(huffcompress.getDecompressedDirectory());
 
@@ -42,14 +42,13 @@ public class DecompressorHuffTest {
         File fileCompressed = new File(smallFilenameToCompressWithoutExtension+extensionForCompressed);
         long compressedLength = fileCompressed.length();
 
-        huffcompress.huffman(smallFilenameToCompressWithoutExtension+extensionForCompressed,false);
+        huffcompress.start(smallFilenameToCompressWithoutExtension+extensionForCompressed,smallFilenameToCompressWithoutExtension+extensionForTexts,false);
 
         File fileDecompressed = new File(huffcompress.getDecompressedDirectory());
 
         long decompressedLength = fileDecompressed.length();
 
         assertTrue(compressedLength > decompressedLength);
-
 
     }
 }

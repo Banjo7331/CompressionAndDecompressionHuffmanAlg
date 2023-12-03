@@ -1,74 +1,101 @@
 package pl.edu.pw.ee.aisd2023zlab5.services;
 
-import pl.edu.pw.ee.aisd2023zlab5.services.HuffmanTreeNode;
 import pl.edu.pw.ee.aisd2023zlab5.services.interfaces.PriorityHeap;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import pl.edu.pw.ee.aisd2023zlab5.exceptions.ElementNotFoundException;
 
-public class PriorityQueueOnHeap implements PriorityHeap {
-    private List<HuffmanTreeNode> heap = new ArrayList<>();
+public class PriorityQueueOnHeap<T extends Comparable<T>> implements PriorityHeap<T> {
+    private T[] queue;
+    private int size;
+    private int elements;
+
+    public PriorityQueueOnHeap() {
+        this.size = 2;
+        this.elements = 0;
+        this.queue = (T[]) new Comparable[size];
+    }
+    public PriorityQueueOnHeap(int startingArraySize) {
+        this.size = startingArraySize;
+        this.elements = 0;
+        this.queue = (T[]) new Comparable[size];
+    }
     @Override
-    public void add(HuffmanTreeNode node) {
-        heap.add(node);
-        int idx = heap.size() - 1;
-        while (idx > 0) {
+    public void add(T node) {
+        resizeIfNeeded();
 
-            int parentIndex = (idx - 1) / 2;
-            if (heap.get(idx).compareTo(heap.get(parentIndex)) <= 0) {
+        queue[elements] = node;
+        elements++;
+
+        heapUp(elements - 1);
+    }
+
+    @Override
+    public T pull() {
+        if (isEmpty()) {
+            throw new ElementNotFoundException("Element not found");
+        }
+
+        T minElement = queue[0];
+        swap(0, elements - 1);
+        elements--;
+        heapDown(0);
+
+        return minElement;
+    }
+    private void heapUp(int index) {
+        while (index > 0) {
+            int parent = (index - 1) / 2;
+            if (queue[index].compareTo(queue[parent]) >= 0) {
                 break;
             }
-            swap(idx, parentIndex);
-            idx = parentIndex;
+            swap(index, parent);
+            index = parent;
         }
     }
-    @Override
-    public HuffmanTreeNode pull() {
-        if (isEmpty()) {
-            throw new RuntimeException("Empty!!");
-        }
-        HuffmanTreeNode root = heap.get(0);
-        int lastIndex = heap.size() - 1;
-        heap.set(0, heap.get(lastIndex));
-        heap.remove(lastIndex);
+    private void heapDown(int index) {
+        while (true) {
+            int leftChild = 2 * index + 1;
+            int rightChild = 2 * index + 2;
+            int smallest = index;
 
-        heapify(0);
-        return root;
-    }
+            if (leftChild < elements && queue[leftChild].compareTo(queue[smallest]) < 0) {
+                smallest = leftChild;
+            }
 
-    private void heapify(int index) {
-        int leftChild = 2 * index + 1;
-        int rightChild = 2 * index + 2;
-        int largest = index;
+            if (rightChild < elements && queue[rightChild].compareTo(queue[smallest]) < 0) {
+                smallest = rightChild;
+            }
 
-        if (leftChild < heap.size() && heap.get(leftChild).compareTo(heap.get(largest)) > 0) {
-            largest = leftChild;
-        }
-
-        if (rightChild < heap.size() && heap.get(rightChild).compareTo(heap.get(largest)) > 0) {
-            largest = rightChild;
-        }
-
-        if (largest != index) {
-            swap(index, largest);
-            heapify(largest);
+            if (smallest != index) {
+                swap(index, smallest);
+                index = smallest;
+            } else {
+                break;
+            }
         }
     }
-
     private void swap(int i, int j) {
-        HuffmanTreeNode temp = heap.get(i);
-        heap.set(i, heap.get(j));
-        heap.set(j, temp);
+        T temp = queue[i];
+        queue[i] = queue[j];
+        queue[j] = temp;
     }
-
+    private void resizeIfNeeded() {
+        if (elements == size) {
+            doubleSize();
+        }
+    }
+    private void doubleSize() {
+        size *= 2;
+        queue = Arrays.copyOf(queue, size);
+    }
     @Override
     public int size() {
-        return heap.size();
+        return elements;
     }
     @Override
-
     public boolean isEmpty() {
-        return heap.isEmpty();
+        return elements == 0;
     }
 }
 
