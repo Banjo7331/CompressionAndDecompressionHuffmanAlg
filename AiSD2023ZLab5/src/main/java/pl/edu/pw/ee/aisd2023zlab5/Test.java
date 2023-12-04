@@ -7,12 +7,12 @@ import java.util.Map;
 
 public class Test {
     public static void main(String[] args) {
-
-        String data = "C:\\Users\\cylwi\\OneDrive\\Pulpit\\AiSD2023ZLab5\\testFiles\\Pan Tadeusz.txt";
+        String fileName = "niemanie.txt";
+        String data = "C:\\Users\\cylwi\\OneDrive\\Pulpit\\AiSD2023ZLab5\\testFiles\\"+fileName;
 
         Huffman huff = new Huffman();
-        huff.start(data,"C:\\Users\\cylwi\\OneDrive\\Pulpit\\AiSD2023ZLab5\\resultOfCompression\\Pan Tadeusz.bhuff",true);
-        huff.start("C:\\Users\\cylwi\\OneDrive\\Pulpit\\AiSD2023ZLab5\\resultOfCompression\\Pan Tadeusz.bhuff","C:\\Users\\cylwi\\OneDrive\\Pulpit\\AiSD2023ZLab5\\resultOfCompression\\Pan Tadeusz.txt",false);
+        huff.start(data,"C:\\Users\\cylwi\\OneDrive\\Pulpit\\AiSD2023ZLab5\\resultOfTestsForHuffman\\niemanie.bhuff",true);
+        huff.start("C:\\Users\\cylwi\\OneDrive\\Pulpit\\AiSD2023ZLab5\\resultOfTestsForHuffman\\niemanie.bhuff","C:\\Users\\cylwi\\OneDrive\\Pulpit\\AiSD2023ZLab5\\resultOfTestsForHuffman\\"+fileName,false);
 
     }
 }

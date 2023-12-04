@@ -1,6 +1,9 @@
 package pl.edu.pw.ee.aisd2023zlab5.decompressor;
 
 import pl.edu.pw.ee.aisd2023zlab5.services.HuffmanTreeNode;
+import pl.edu.pw.ee.aisd2023zlab5.services.PriorityQueueOnHeap;
+import pl.edu.pw.ee.aisd2023zlab5.services.map.Node;
+import pl.edu.pw.ee.aisd2023zlab5.services.map.RbtMap;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -9,6 +12,7 @@ import java.util.Map;
 
 public class DecompressorHuff {
     private Map<Byte, String> huffmanCodes = new HashMap<>();
+    private RbtMap<Byte, String> huffmanCodes1 = new RbtMap<>();
     private HuffmanTreeNode root = null;
 
     public void decompressFile(String inputFilePath, String outputFileName) {
@@ -23,7 +27,8 @@ public class DecompressorHuff {
             generateCodes(root,"");
 
 
-            Map<String, Byte> reversedKeysAndValuesMap = changeInMapKeysForValues(huffmanCodes);
+            //Map<String, Byte> reversedKeysAndValuesMap = changeInMapKeysForValues(huffmanCodes);
+            RbtMap<String,Byte> reversedKeysAndValuesMap = changeInMapKeysForValues(huffmanCodes1);
 
             StringBuilder currentCode = new StringBuilder();
 
@@ -31,8 +36,8 @@ public class DecompressorHuff {
             while ((bit = bis.readBit()) != -1) {
                 currentCode.append(bit);
 
-                if (reversedKeysAndValuesMap.containsKey(currentCode.toString())) {
-                    int character = reversedKeysAndValuesMap.get(currentCode.toString());
+                if (/*reversedKeysAndValuesMap.containsKey(currentCode.toString())*/reversedKeysAndValuesMap.getValue(currentCode.toString()) != null) {
+                    int character = reversedKeysAndValuesMap.getValue(currentCode.toString());
                     outputStream.write(character);
                     currentCode = new StringBuilder();
                 }
@@ -74,19 +79,34 @@ public class DecompressorHuff {
 
         if (root.isLeaf() == true) {
             huffmanCodes.put(root.GetCharacter(), currentCode);
+            huffmanCodes1.setValue(root.GetCharacter(), currentCode);
             return;
         }
 
         generateCodes(root.GetLeft(), currentCode + "0");
         generateCodes(root.GetRight(), currentCode + "1");
     }
-    private Map<String, Byte> changeInMapKeysForValues(Map<Byte, String> huffmanCodes) {
+    private /*Map<String, Byte>*/RbtMap<String,Byte> changeInMapKeysForValues(RbtMap<Byte,String>/*Map<Byte, String>*/ huffmanCodes) {
 
         Map<String, Byte> reversedKeysAndValues = new HashMap<>();
-        for (Map.Entry<Byte, String> entry : huffmanCodes.entrySet()) {
-            reversedKeysAndValues.put(entry.getValue(), entry.getKey());
+        RbtMap<String,Byte> reversedKeysAndValues1 = new RbtMap<>();
+        traverseInOrder(huffmanCodes.getTree().getRoot(),reversedKeysAndValues1);
+        //for (Map.Entry<Byte, String> entry : huffmanCodes.entrySet()) {
+            //reversedKeysAndValues.put(entry.getValue(), entry.getKey());
+        //}
+        return reversedKeysAndValues1;//reversedKeysAndValues;
+    }
+    private static void traverseInOrder(Node<Byte, String> node,RbtMap<String,Byte> reversedKeysAndValues1) {
+        if (node != null) {
+            traverseInOrder(node.getLeft(),reversedKeysAndValues1);
+
+            byte loadedByte = node.getKey();
+            String freq = node.getValue();
+
+            reversedKeysAndValues1.setValue(freq,loadedByte);
+
+            traverseInOrder(node.getRight(),reversedKeysAndValues1); // Rekurencyjnie przejdź prawe poddrzewo.
         }
-        return reversedKeysAndValues;
     }
 
 

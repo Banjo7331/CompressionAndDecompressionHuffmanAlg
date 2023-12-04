@@ -2,6 +2,9 @@ package pl.edu.pw.ee.aisd2023zlab5.compressor;
 
 import pl.edu.pw.ee.aisd2023zlab5.services.HuffmanTreeNode;
 import pl.edu.pw.ee.aisd2023zlab5.services.PriorityQueueOnHeap;
+import pl.edu.pw.ee.aisd2023zlab5.services.interfaces.MapInterface;
+import pl.edu.pw.ee.aisd2023zlab5.services.map.Node;
+import pl.edu.pw.ee.aisd2023zlab5.services.map.RbtMap;
 
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
@@ -15,10 +18,11 @@ import java.util.Map;
 
 public class CompressorHuff {
     private Map<Byte, String> huffmanCodes = new HashMap<>();
+    private RbtMap<Byte,String> huffmanCodes1 = new RbtMap<>();
     private List<Byte> bytesToAddDictionary = new ArrayList<>();
 
     public void compress(String pathToRootDir, String compressedPath){
-        Map<Byte,Integer> frequency = ReadFileForData( pathToRootDir);
+        RbtMap<Byte,Byte> /*Map<Byte,Integer>*/ frequency = ReadFileForData( pathToRootDir);
         HuffmanTreeNode root = huffmanTree(frequency);
 
         generateCodes(root, "");
@@ -29,8 +33,10 @@ public class CompressorHuff {
 
     }
 
-    public static Map<Byte, Integer> ReadFileForData(String pathToRootDir){
+    public static RbtMap<Byte,Byte>/*Map<Byte, Integer>*/ ReadFileForData(String pathToRootDir){
         Map<Byte, Integer> byteCounter = new HashMap<>();
+
+        RbtMap<Byte,Byte> rbtMap = new RbtMap<>();;
 
         try (InputStream inputStream = new FileInputStream(pathToRootDir)) {
 
@@ -39,6 +45,7 @@ public class CompressorHuff {
                 byte byteKey = (byte) znak;
 
                 byteCounter.put(byteKey, byteCounter.getOrDefault(byteKey, 0) + 1);
+                rbtMap.setValue(byteKey,byteKey);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -47,12 +54,25 @@ public class CompressorHuff {
         //for (Map.Entry<Byte, Integer> entry : byteCounter.entrySet()) {
             //System.out.println("Znak: " + entry.getKey() + ", Ilość: " + entry.getValue());
         //}
-        return byteCounter;
+        return rbtMap;//byteCounter;
     }
-    public HuffmanTreeNode huffmanTree(Map<Byte,Integer> frequency){
+    private static void traverseInOrder(Node<Byte, Byte> node,PriorityQueueOnHeap priorityQueueOnHeap) {
+        if (node != null) {
+            traverseInOrder(node.getLeft(),priorityQueueOnHeap);
+
+            byte loadedByte = node.getKey();
+            int freq = node.getFrequency();
+
+            HuffmanTreeNode newNode = new HuffmanTreeNode(loadedByte, freq, true);
+            priorityQueueOnHeap.add(newNode);
+
+            traverseInOrder(node.getRight(),priorityQueueOnHeap); // Rekurencyjnie przejdź prawe poddrzewo.
+        }
+    }
+    public HuffmanTreeNode huffmanTree(RbtMap<Byte,Byte>/*Map<Byte,Integer>*/ frequency){
 
         PriorityQueueOnHeap<HuffmanTreeNode> priorityQueueOnHeap = new PriorityQueueOnHeap();
-        for (Map.Entry<Byte, Integer> entry : frequency.entrySet()) {
+        /*for (Map.Entry<Byte, Integer> entry : frequency.entrySet()) {
             byte loadedByte = entry.getKey();
             int freq = entry.getValue();
 
@@ -60,6 +80,8 @@ public class CompressorHuff {
             priorityQueueOnHeap.add(newNode);
         }
 
+        */
+        traverseInOrder(frequency.getTree().getRoot(), priorityQueueOnHeap);
         HuffmanTreeNode root = null;
         byte NODENOTLEAF = 'T';
 
@@ -79,6 +101,7 @@ public class CompressorHuff {
     private void generateCodes(HuffmanTreeNode root, String currentCode) {
         if (root.isLeaf() == true) {
             huffmanCodes.put(root.GetCharacter(), currentCode);
+            huffmanCodes1.setValue(root.GetCharacter(),currentCode);
             return;
         }
 
@@ -111,7 +134,8 @@ public class CompressorHuff {
                 while ((byteRead = inputStream.read()) != -1) {
                     byte byteKey = (byte) byteRead;
 
-                    String code = huffmanCodes.get(byteKey);
+                    //String code = huffmanCodes.get(byteKey);
+                    String code = huffmanCodes1.getValue(byteKey);
                     for (char bit : code.toCharArray()) {
                         bos.writeBit(bit == '1' ? true : false);
                     }
