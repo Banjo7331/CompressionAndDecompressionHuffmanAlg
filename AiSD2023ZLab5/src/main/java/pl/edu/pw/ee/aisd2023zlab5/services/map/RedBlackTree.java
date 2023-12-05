@@ -7,7 +7,6 @@ import static pl.edu.pw.ee.aisd2023zlab5.services.map.Color.RED;
 public class RedBlackTree<K extends Comparable<K>, V> {
 
     private Node<K, V> root;
-    private int currentNumOfPut = 0;
 
     public V get(K key) {
         validateKey(key);
@@ -33,7 +32,6 @@ public class RedBlackTree<K extends Comparable<K>, V> {
 
     public void put(K key, V value) {
         validateParams(key, value);
-        currentNumOfPut = 0;
         root = put(root, key, value);
         root.setColor(BLACK);
     }
@@ -71,7 +69,6 @@ public class RedBlackTree<K extends Comparable<K>, V> {
     }
 
     private Node<K, V> put(Node<K, V> node, K key, V value) {
-        currentNumOfPut++;
 
         if (node == null) {
             return new Node(key, value);

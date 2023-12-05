@@ -2,7 +2,7 @@ package pl.edu.pw.ee.aisd2023zlab5.compressor;
 
 import pl.edu.pw.ee.aisd2023zlab5.services.HuffmanTreeNode;
 import pl.edu.pw.ee.aisd2023zlab5.services.PriorityQueueOnHeap;
-import pl.edu.pw.ee.aisd2023zlab5.services.interfaces.MapInterface;
+import pl.edu.pw.ee.aisd2023zlab5.services.interfaces.HuffmanCoding;
 import pl.edu.pw.ee.aisd2023zlab5.services.map.Node;
 import pl.edu.pw.ee.aisd2023zlab5.services.map.RbtMap;
 
@@ -12,17 +12,14 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class CompressorHuff {
-    private Map<Byte, String> huffmanCodes = new HashMap<>();
+public class CompressorHuff implements HuffmanCoding {
     private RbtMap<Byte,String> huffmanCodes1 = new RbtMap<>();
     private List<Byte> bytesToAddDictionary = new ArrayList<>();
 
     public void compress(String pathToRootDir, String compressedPath){
-        RbtMap<Byte,Byte> /*Map<Byte,Integer>*/ frequency = ReadFileForData( pathToRootDir);
+        RbtMap<Byte,Byte> frequency = ReadFileForData( pathToRootDir);
         HuffmanTreeNode root = huffmanTree(frequency);
 
         generateCodes(root, "");
@@ -33,8 +30,7 @@ public class CompressorHuff {
 
     }
 
-    public static RbtMap<Byte,Byte>/*Map<Byte, Integer>*/ ReadFileForData(String pathToRootDir){
-        Map<Byte, Integer> byteCounter = new HashMap<>();
+    public static RbtMap<Byte,Byte> ReadFileForData(String pathToRootDir){
 
         RbtMap<Byte,Byte> rbtMap = new RbtMap<>();;
 
@@ -44,21 +40,18 @@ public class CompressorHuff {
             while ((znak = inputStream.read()) != -1) {
                 byte byteKey = (byte) znak;
 
-                byteCounter.put(byteKey, byteCounter.getOrDefault(byteKey, 0) + 1);
+                //byteCounter.put(byteKey, byteCounter.getOrDefault(byteKey, 0) + 1);
                 rbtMap.setValue(byteKey,byteKey);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        //for (Map.Entry<Byte, Integer> entry : byteCounter.entrySet()) {
-            //System.out.println("Znak: " + entry.getKey() + ", Ilość: " + entry.getValue());
-        //}
-        return rbtMap;//byteCounter;
+        return rbtMap;
     }
-    private static void traverseInOrder(Node<Byte, Byte> node,PriorityQueueOnHeap priorityQueueOnHeap) {
+    private static void addNodesToPriorityQueueFromMap(Node<Byte, Byte> node,PriorityQueueOnHeap priorityQueueOnHeap) {
         if (node != null) {
-            traverseInOrder(node.getLeft(),priorityQueueOnHeap);
+            addNodesToPriorityQueueFromMap(node.getLeft(),priorityQueueOnHeap);
 
             byte loadedByte = node.getKey();
             int freq = node.getFrequency();
@@ -66,22 +59,15 @@ public class CompressorHuff {
             HuffmanTreeNode newNode = new HuffmanTreeNode(loadedByte, freq, true);
             priorityQueueOnHeap.add(newNode);
 
-            traverseInOrder(node.getRight(),priorityQueueOnHeap); // Rekurencyjnie przejdź prawe poddrzewo.
+            addNodesToPriorityQueueFromMap(node.getRight(),priorityQueueOnHeap);
         }
     }
-    public HuffmanTreeNode huffmanTree(RbtMap<Byte,Byte>/*Map<Byte,Integer>*/ frequency){
+    public HuffmanTreeNode huffmanTree(RbtMap<Byte,Byte> frequency){
 
         PriorityQueueOnHeap<HuffmanTreeNode> priorityQueueOnHeap = new PriorityQueueOnHeap();
-        /*for (Map.Entry<Byte, Integer> entry : frequency.entrySet()) {
-            byte loadedByte = entry.getKey();
-            int freq = entry.getValue();
 
-            HuffmanTreeNode newNode = new HuffmanTreeNode(loadedByte,freq,true);
-            priorityQueueOnHeap.add(newNode);
-        }
+        addNodesToPriorityQueueFromMap(frequency.getTree().getRoot(), priorityQueueOnHeap);
 
-        */
-        traverseInOrder(frequency.getTree().getRoot(), priorityQueueOnHeap);
         HuffmanTreeNode root = null;
         byte NODENOTLEAF = 'T';
 
@@ -98,9 +84,9 @@ public class CompressorHuff {
 
         return root;
     }
-    private void generateCodes(HuffmanTreeNode root, String currentCode) {
+    @Override
+    public void generateCodes(HuffmanTreeNode root, String currentCode) {
         if (root.isLeaf() == true) {
-            huffmanCodes.put(root.GetCharacter(), currentCode);
             huffmanCodes1.setValue(root.GetCharacter(),currentCode);
             return;
         }
@@ -134,7 +120,6 @@ public class CompressorHuff {
                 while ((byteRead = inputStream.read()) != -1) {
                     byte byteKey = (byte) byteRead;
 
-                    //String code = huffmanCodes.get(byteKey);
                     String code = huffmanCodes1.getValue(byteKey);
                     for (char bit : code.toCharArray()) {
                         bos.writeBit(bit == '1' ? true : false);

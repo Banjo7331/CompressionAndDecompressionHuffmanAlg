@@ -14,7 +14,6 @@ public class Huffman {
     private String startPath;
     private String resultPath;
     private final static String EXTENSIONFORCOMPRESSEDFILES = ".bhuff";
-    private String pathToStartingFileExtension="";
     private String inputExtension="";
     private String outputExtension="";
 
@@ -81,7 +80,7 @@ public class Huffman {
         Path filePath = FileSystems.getDefault().getPath(pathToResultFile);
 
         if (Files.exists(filePath)) {
-            throw new FileNotFoundException("File already exist, not need to make it again: " + pathToResultFile);
+            throw new FileNotFoundException("File of the same name in this directory already exists: " + pathToResultFile);
         }
     }
 
