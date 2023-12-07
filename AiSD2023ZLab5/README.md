@@ -1,6 +1,6 @@
 # Huffman Compressor/Decompressor
 
-### ![Logo](PicturesOfCode/Drzewo Katalogowe Projektu.png)
+### ![Logo](PicturesOfCode/DrzewoKatalogoweProjektu.png)
 
 ## Sposób użycia
 >Przy uzyciu programu należy podać 3 argumenty 
