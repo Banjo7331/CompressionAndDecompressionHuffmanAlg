@@ -25,11 +25,11 @@ public class RbtMapTest {
         for(int i = 0; i < a.length(); i++){
             rbtMap.setValue(charArray[i],charArray[i]);
         }
-        rbtMap.showTree();
+        assertThat(rbtMap.getSize() == a.length());
+        //rbtMap.showTree();
     }
     @Test
     public void Adding_biedronka_Test() {
-        // given
         RbtMap<Character,Character> rbtMap = new RbtMap();
         String a= "biedronka";
         char[] charArray = a.toCharArray();
@@ -37,7 +37,8 @@ public class RbtMapTest {
         for(int i = 0; i < a.length(); i++){
             rbtMap.setValue(charArray[i],charArray[i]);
         }
-        rbtMap.showTree();
+        assertThat(rbtMap.getSize() == a.length());
+        //rbtMap.showTree();
 
 
     }
@@ -54,7 +55,8 @@ public class RbtMapTest {
         String end= "end";
 
         rbtMap.setValue(key,end);
-        rbtMap.showTree();
+        assertThat(rbtMap.getSize()==1);
+        //rbtMap.showTree();
 
     }
     @Test
@@ -138,7 +140,7 @@ public class RbtMapTest {
             String randW = generateRandomWord(false,Integer.MIN_VALUE);
             rbtMap.setValue(randW,randW);
         }
-
+        assertThat(rbtMap.getSize() == size);
     }
     @Test
     public void should_Add_100k_Random_Words_WithTheSameLength() {
@@ -150,7 +152,7 @@ public class RbtMapTest {
             String randW = generateRandomWord(true, sizeOfWord);
             rbtMap.setValue(randW,randW);
         }
-
+        assertThat(rbtMap.getSize() == size);
     }
 
 
@@ -186,19 +188,9 @@ public class RbtMapTest {
         for(int i = 0; i < a.length(); i++){
             rbtMap.setValue(charArray[i],charArray[i]);
         }
-        rbtMap.showTree();
+        assertThat(rbtMap.getSize() == a.length());
         rbtMap.deleteMaxValue();
-        rbtMap.showTree();
-        rbtMap.deleteMaxValue();
-        rbtMap.showTree();
-        rbtMap.deleteMaxValue();
-        rbtMap.showTree();
-        rbtMap.deleteMaxValue();
-        rbtMap.showTree();
-        rbtMap.deleteMaxValue();
-        rbtMap.showTree();
-        rbtMap.deleteMaxValue();
-        rbtMap.showTree();
+        assertThat(rbtMap.getSize() == a.length()-1);
     }
     @Test
     public void should_Add_100k_Random_Words_WithTheSameLength_AndDeleteThem() {
@@ -210,9 +202,11 @@ public class RbtMapTest {
             String randW = generateRandomWord(true, sizeOfWord);
             rbtMap.setValue(randW,randW);
         }
+        assertThat(rbtMap.getSize() == size);
         for(int i = 0; i < size; i++){
             rbtMap.deleteMaxValue();
         }
+        assertThat(rbtMap.getSize() == 0);
 
     }
 

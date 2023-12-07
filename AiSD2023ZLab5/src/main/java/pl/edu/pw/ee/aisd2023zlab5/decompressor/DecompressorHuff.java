@@ -87,7 +87,7 @@ public class DecompressorHuff implements HuffmanCoding {
     private RbtMap<String,Byte> changeInMapKeysForValues(RbtMap<Byte,String> huffmanCodes) {
 
         RbtMap<String,Byte> reversedKeysAndValues1 = new RbtMap<>();
-        traverseInOrder(huffmanCodes.getTree().getRoot(),reversedKeysAndValues1);
+        traverseInOrder(huffmanCodes.getTree(),reversedKeysAndValues1);
 
         return reversedKeysAndValues1;
     }

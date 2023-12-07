@@ -7,7 +7,7 @@ import static pl.edu.pw.ee.aisd2023zlab5.services.map.Color.RED;
 public class RedBlackTree<K extends Comparable<K>, V> {
 
     private Node<K, V> root;
-
+    private int sizeOfTree = 0;
     public V get(K key) {
         validateKey(key);
         Node<K, V> node = root;
@@ -42,7 +42,7 @@ public class RedBlackTree<K extends Comparable<K>, V> {
         }
 
         root = deleteMax(root);
-
+        sizeOfTree--;
         if (root != null) {
             root.setColor(BLACK);
         }
@@ -71,6 +71,7 @@ public class RedBlackTree<K extends Comparable<K>, V> {
     private Node<K, V> put(Node<K, V> node, K key, V value) {
 
         if (node == null) {
+            sizeOfTree++;
             return new Node(key, value);
         }
 
@@ -212,6 +213,9 @@ public class RedBlackTree<K extends Comparable<K>, V> {
     }
     public Node<K,V> getRoot(){
         return root;
+    }
+    public int getTreeSize(){
+        return sizeOfTree;
     }
     public void printTree() {
         redBlackTreePrinter(this.root, "", 0);

@@ -1,7 +1,10 @@
 package pl.edu.pw.ee.aisd2023zlab5;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import pl.edu.pw.ee.aisd2023zlab5.exceptions.ElementNotFoundException;
+import pl.edu.pw.ee.aisd2023zlab5.exceptions.IncorrectFileToDecompress;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,21 +31,62 @@ public class HuffmanTest {
             }
         }
     }
+    @After
+    public void removeLastFiles() {
+        removeFilesBeforeStart();
+    }
     @Test
-    public void test_For_Not_ExistingFile_() {
-        String fileName = "Nie Istnieje";
+    public void test_For_Giving_AsSecond_File_Only_Directory() {
+        String fileName = "Huffman_Strzemiński_oddanie_2022";
         String ogFileExtension = ".txt";
         String data = directoryOfTestFiles+fileName+ogFileExtension;
-        String compressedFile = directoryOfResultFiles+fileName+compressedExtension;
+        String compressedFile = directoryOfResultFiles;
         String decompressedFile = directoryOfResultFiles+fileName+ogFileExtension;
         Huffman huff = new Huffman();
-        Throwable exceptionCaught = catchThrowable(() -> {
-            huff.start(data,compressedFile,true);
-        });
+        huff.start(data,compressedFile,true);
+        huff.start(compressedFile+fileName+compressedExtension,decompressedFile,false);
 
+        pathsToFilesArray.add(compressedFile+fileName+compressedExtension);
+        pathsToFilesArray.add(decompressedFile);
+
+    }
+    @Test
+    public void test_For_Giving_AsDecompressFileWith_NotCompressedExtension() {
+        String fileName = "Huffman_Strzemiński_oddanie_2022";
+        String ogFileExtension = ".txt";
+        String data = directoryOfTestFiles+fileName+ogFileExtension;
+        String compressedFile = directoryOfResultFiles;
+        String decompressedFile = directoryOfResultFiles+fileName+ogFileExtension;
+        Huffman huff = new Huffman();
+        huff.start(data,compressedFile,true);
+
+        Throwable exceptionCaught = catchThrowable(() -> {
+            huff.start(data,decompressedFile,false);
+        });
         assertThat(exceptionCaught)
-                .isInstanceOf(RuntimeException.class)
-                .hasMessage("java.io.FileNotFoundException: "+"File given to be operated doesn't exist: " + data);
+                .isInstanceOf(IncorrectFileToDecompress.class)
+                .hasMessage("Can't decompress files with this extension");
+
+        pathsToFilesArray.add(compressedFile+fileName+compressedExtension);
+    }
+    @Test
+    public void test_For_Giving_AsDecompressFileWhenWhileDecompresingGivingOnlyDirectory() {
+        String fileName = "Huffman_Strzemiński_oddanie_2022";
+        String ogFileExtension = ".txt";
+        String data = directoryOfTestFiles+fileName+ogFileExtension;
+        String compressedFile = directoryOfResultFiles;
+        String decompressedFile = directoryOfResultFiles+fileName+ogFileExtension;
+        Huffman huff = new Huffman();
+        huff.start(data,compressedFile,true);
+
+        Throwable exceptionCaught = catchThrowable(() -> {
+            huff.start(compressedFile+fileName+compressedExtension,directoryOfResultFiles,false);
+        });
+        assertThat(exceptionCaught)
+                .isInstanceOf(IncorrectFileToDecompress.class)
+                .hasMessage("Can't get as result path to decompress only directory");
+
+        pathsToFilesArray.add(compressedFile+fileName+compressedExtension);
     }
     @Test
     public void test_For_Not_Decompressing_WhenFile_OfTheSameName_ExistsInSameDirectory() {
@@ -63,8 +107,8 @@ public class HuffmanTest {
         });
 
         assertThat(exceptionCaught)
-                .isInstanceOf(RuntimeException.class)
-                .hasMessage("java.io.FileNotFoundException: "+"File of the same name in this directory already exists: " + decompressedFile);
+                .isInstanceOf(ElementNotFoundException.class)
+                .hasMessage("File of the same name in this directory already exists: " + decompressedFile);
     }
     @Test
     public void test_For_Not_Compressing_WhenFile_OfTheSameName_ExistsInSameDirectory() {
@@ -85,8 +129,8 @@ public class HuffmanTest {
         });
 
         assertThat(exceptionCaught)
-                .isInstanceOf(RuntimeException.class)
-                .hasMessage("java.io.FileNotFoundException: "+"File of the same name in this directory already exists: " + compressedFile);
+                .isInstanceOf(ElementNotFoundException.class)
+                .hasMessage("File of the same name in this directory already exists: " + compressedFile);
     }
     @Test
     public void test_For_niemanie_AvarageSize_File() {
@@ -252,6 +296,22 @@ public class HuffmanTest {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+    @Test
+    public void test_For_Not_ExistingFile_() {
+        String fileName = "Nie Istnieje";
+        String ogFileExtension = ".txt";
+        String data = directoryOfTestFiles+fileName+ogFileExtension;
+        String compressedFile = directoryOfResultFiles+fileName+compressedExtension;
+        String decompressedFile = directoryOfResultFiles+fileName+ogFileExtension;
+        Huffman huff = new Huffman();
+        Throwable exceptionCaught = catchThrowable(() -> {
+            huff.start(data,compressedFile,true);
+        });
+
+        assertThat(exceptionCaught)
+                .isInstanceOf(RuntimeException.class)
+                .hasMessage("java.io.FileNotFoundException: "+"File given to be operated doesn't exist: " + data);
     }
     private static void removeFilesBeforeStart() {
         for(int i = 0; i < pathsToFilesArray.size(); i++) {

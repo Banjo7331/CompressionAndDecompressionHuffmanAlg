@@ -25,7 +25,7 @@ public class CompressorHuff implements HuffmanCoding {
         generateCodes(root, "");
 
         buildDictionaryPostOrder(root, (byte) 0);
-        System.out.println(bytesToAddDictionary);
+        //System.out.println(bytesToAddDictionary);
         writeBitsToFile(pathToRootDir,compressedPath);
 
     }
@@ -40,7 +40,6 @@ public class CompressorHuff implements HuffmanCoding {
             while ((znak = inputStream.read()) != -1) {
                 byte byteKey = (byte) znak;
 
-                //byteCounter.put(byteKey, byteCounter.getOrDefault(byteKey, 0) + 1);
                 rbtMap.setValue(byteKey,byteKey);
             }
         } catch (IOException e) {
@@ -66,7 +65,7 @@ public class CompressorHuff implements HuffmanCoding {
 
         PriorityQueueOnHeap<HuffmanTreeNode> priorityQueueOnHeap = new PriorityQueueOnHeap();
 
-        addNodesToPriorityQueueFromMap(frequency.getTree().getRoot(), priorityQueueOnHeap);
+        addNodesToPriorityQueueFromMap(frequency.getTree(), priorityQueueOnHeap);
 
         HuffmanTreeNode root = null;
         byte NODENOTLEAF = 'T';

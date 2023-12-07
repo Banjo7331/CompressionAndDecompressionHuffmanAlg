@@ -1,6 +1,7 @@
 package pl.edu.pw.ee.aisd2023zlab5.services.map;
 
 
+import pl.edu.pw.ee.aisd2023zlab5.services.HuffmanTreeNode;
 import pl.edu.pw.ee.aisd2023zlab5.services.interfaces.MapInterface;
 
 public class RbtMap<K extends Comparable<K>, V> implements MapInterface<K, V> {
@@ -34,8 +35,11 @@ public class RbtMap<K extends Comparable<K>, V> implements MapInterface<K, V> {
         tree.printTree();
     }
 
-    public RedBlackTree<K, V> getTree(){
-        return tree;
+    public Node<K, V> getTree(){
+        return tree.getRoot();
+    }
+    public int getSize(){
+        return tree.getTreeSize();
     }
 
 

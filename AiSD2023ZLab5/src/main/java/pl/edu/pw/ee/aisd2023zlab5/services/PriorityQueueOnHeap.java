@@ -43,21 +43,21 @@ public class PriorityQueueOnHeap<T extends Comparable<T>> implements PriorityHea
 
         return minElement;
     }
-    private void heapUp(int index) {
-        while (index > 0) {
-            int parent = (index - 1) / 2;
-            if (queue[index].compareTo(queue[parent]) >= 0) {
+    private void heapUp(int idx) {
+        while (idx > 0) {
+            int parent = (idx - 1) / 2;
+            if (queue[idx].compareTo(queue[parent]) >= 0) {
                 break;
             }
-            swap(index, parent);
-            index = parent;
+            swap(idx, parent);
+            idx = parent;
         }
     }
-    private void heapDown(int index) {
+    private void heapDown(int idx) {
         while (true) {
-            int leftChild = 2 * index + 1;
-            int rightChild = 2 * index + 2;
-            int smallest = index;
+            int leftChild = 2 * idx + 1;
+            int rightChild = 2 * idx + 2;
+            int smallest = idx;
 
             if (leftChild < elements && queue[leftChild].compareTo(queue[smallest]) < 0) {
                 smallest = leftChild;
@@ -67,9 +67,9 @@ public class PriorityQueueOnHeap<T extends Comparable<T>> implements PriorityHea
                 smallest = rightChild;
             }
 
-            if (smallest != index) {
-                swap(index, smallest);
-                index = smallest;
+            if (smallest != idx) {
+                swap(idx, smallest);
+                idx = smallest;
             } else {
                 break;
             }

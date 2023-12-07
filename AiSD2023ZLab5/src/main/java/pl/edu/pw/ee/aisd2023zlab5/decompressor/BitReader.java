@@ -12,11 +12,11 @@ public class BitReader implements AutoCloseable {
     private long howManyBytes = 0;
     private int howManyBitsIgnore=0;
 
-    public BitReader(InputStream inputStream, long filelength) {
+    public BitReader(InputStream inputStream, long fileLength) {
         this.inputStream = new BufferedInputStream(inputStream);
         this.currentByte = 0;
         this.numBitsFilled = 0;
-        this.lengthOfFile = filelength;
+        this.lengthOfFile = fileLength;
     }
 
     public int readBit() throws IOException {

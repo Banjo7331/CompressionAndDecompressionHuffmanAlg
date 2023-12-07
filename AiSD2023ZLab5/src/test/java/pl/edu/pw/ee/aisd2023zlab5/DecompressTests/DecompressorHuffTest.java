@@ -17,9 +17,8 @@ public class DecompressorHuffTest {
     private static final String extensionForTexts = ".txt";
     private static final String extensionForCompressed = ".bhuff";
     @Test
-    public void bigFileDecompressTest() {
+    public void bigFileDecompressTestKnowingThatCompressedIsSmallerThanOrignal() {
         Huffman huffcompress = new Huffman();
-        Random random = new Random();
 
         File fileCompressed = new File(bigFilenameToCompressWithoutExtension+extensionForCompressed);
         long compressedLength = fileCompressed.length();
@@ -35,9 +34,8 @@ public class DecompressorHuffTest {
 
     }
     @Test
-    public void smallFileDecompressTest() {
+    public void smallFileDecompressTestKnowingThatCompressedIsBiggerThenOriginal() {
         Huffman huffcompress = new Huffman();
-        Random random = new Random();
 
         File fileCompressed = new File(smallFilenameToCompressWithoutExtension+extensionForCompressed);
         long compressedLength = fileCompressed.length();

@@ -1,5 +1,6 @@
 package pl.edu.pw.ee.aisd2023zlab5.DecompressTests;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import pl.edu.pw.ee.aisd2023zlab5.compressor.BitWriter;
@@ -10,9 +11,10 @@ import java.io.*;
 import static org.junit.Assert.assertTrue;
 
 public class BitReaderTest {
-    private static final String filenameToCompressWithoutExtension = "C:\\Users\\cylwi\\OneDrive\\Pulpit\\AiSD2023ZLab5\\byte";
+    private static final String filenameToCompressWithoutExtension = "C:\\Users\\cylwi\\OneDrive\\Pulpit\\AiSD2023ZLab5\\resultOfTestsForHuffman\\byte";
     private static final String extensionForTexts = ".txt";
     private static final String extensionForCompressed = ".bhuff";
+    private static final char DELETEMARKER= '1';
     @Before
     public void setup() {
         removeFilesBeforeStart();
@@ -26,7 +28,7 @@ public class BitReaderTest {
             for (byte bit : bitArray) {
                 bos.writeBit(bit == 1 ? true : false);
             }
-
+            bos.writeBit(DELETEMARKER == '1'? true: false );
             bos.flush();
 
             File f = new File(filenameToCompressWithoutExtension+extensionForCompressed);
@@ -35,7 +37,8 @@ public class BitReaderTest {
             try {
                 BitReader bis = new BitReader(new BufferedInputStream(new FileInputStream(filenameToCompressWithoutExtension+extensionForCompressed)), l);
                 for(int i = 0; i < 8; i++){
-                    bis.readBit();
+                    byte isEqual = (byte) bis.readBit();
+                    assertTrue(isEqual == bitArray[i]);
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);

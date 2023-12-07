@@ -20,7 +20,7 @@ public class CompressorHuffTest {
         removeFilesBeforeStart();
     }
     @Test
-    public void bigFileCompressTest() {
+    public void bigFileCompressTestKnowingThatCompressedSizeWillBeSmaller() {
         Huffman huffcompress = new Huffman();
         Random random = new Random();
 
@@ -51,7 +51,7 @@ public class CompressorHuffTest {
 
     }
     @Test
-    public void smallFileCompressTest() {
+    public void smallFileCompressTestKnowingThatCompressedFileSizeCantBeSmaller() {
         Huffman huffcompress = new Huffman();
         Random random = new Random();
 
