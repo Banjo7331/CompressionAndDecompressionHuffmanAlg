@@ -1,4 +1,25 @@
-# CompressionAndDecompressionHuffmanAlg
-Learning algorithms by mini projects
+# Huffman Compressor/Decompressor
 
-![Huffman Algorithm]([https://example.com/path/to/your/image.jpg](https://www.researchgate.net/publication/358802549/figure/fig2/AS:1126645150826527@1645624544171/Compression-using-Huffman-coding.jpg)https://www.researchgate.net/publication/358802549/figure/fig2/AS:1126645150826527@1645624544171/Compression-using-Huffman-coding.jpg](https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Huffman_tree_2.svg/1280px-Huffman_tree_2.svg.png)https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Huffman_tree_2.svg/1280px-Huffman_tree_2.svg.png)
+### ![Logo](AiSD2023ZLab5/PicturesOfCode/DrzewoKatalogoweProjektu.png)
+
+## Sposób użycia
+>Przy uzyciu programu należy podać 3 argumenty 
+* ścieżka pliku który bedzie uzytu do operacji programu
+* ścieżka pliku lub directory do którego zapisywany jest rezultat operacji programu ( __jeśli to dekompresja, trzeba podac ścieżke pliku, bo potrzebne jest rozszerzenie, w innym przpyadku wyrzuci wyjątek__)
+* true lub false, true - kompresja, false - dekompresja
+
+
+Przykład użycia w terminalu:
+
+### ![Logo](AiSD2023ZLab5/PicturesOfCode/Przyklad.png)
+```bash
+java -jar NazwaProgramu.jar [plikDoOperacji] [plikRezultowy] [true/false] (w zaleznosci czy kompresja czy dekompresja)
+```
+## Sposób zapisania dla pliku skompresowanego
+
+>Plik sompresowany mozna podzielić na 3 częsci:
+> * Słownik w postaci przejścai drzewa preorder:
+> > Kiedy przochodzimy przez drzewo w lewo wtawiany jst bit 0, kiedy jest node jest liściem to bit 1, i zawsze bo bicie oznaczajacym lisc, byte definiujący liść np: [0,1,A,1,B,0,1,C,1,D]
+> * Odra po przejściu słownika zapisawyny jest plik wejściowy w postaci nowych kodów Huffmana
+> * Na koniec dopełnienie bajtowe, zawsze po 2 podpunkcie zapisywany jest Marker ozaczajacy bit 1 a po nim, jeśli jest potrzeba wypełnienia bajta 0, pozwala to łatwo zidentyfikować, kiedy nie należy czytać dalej kodów, przy dekodowaniu
+> >** Plik skompresowany ma rozszerzenie .bhuff**
